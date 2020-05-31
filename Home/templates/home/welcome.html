@@ -1,0 +1,24 @@
+{% extends 'home/base.html' %}
+{% block title %}Welcome{% endblock %}
+
+{% block body %}
+{% csrf_token %}
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header ">
+      <p class="navbar-brand navbar-right" >Welcome to AbdulRashid Datacenter</p>
+    </div>
+
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="{% url 'document:index' %}"><span class="glyphicon glyphicon-file"></span>Documents</a></li>
+      <li><a href="{% url 'video:index' %}"><span class="glyphicon glyphicon-facetime-video"></span> videos</a></li>
+      <li><a href="{% url 'music:index' %}"><span class="glyphicon glyphicon-music"></span> Music</a></li>
+      <li><a href="{% url 'table:index' %}"><span class="glyphicon glyphicon-menu-hamburger"></span> Tables</a></li>
+      <li><a href="{% url 'image:index' %}"><span class="glyphicon glyphicon-picture"></span> Images</a></li>
+      <li><a href="{% url 'home:logout_user' %}"><span class="glyphicon glyphicon-off"></span> Logout</a></li>
+      <li><a href=""><span class="glyphicon glyphicon"></span>Welcome {{user}}</a></li>
+    </ul>
+
+  </div>
+</nav>
+{% endblock %}

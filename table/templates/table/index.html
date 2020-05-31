@@ -1,0 +1,157 @@
+{% extends 'table/base.html' %}
+{% block albums_active %}video{% endblock %}
+{% load static %}
+
+{% block body %}
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <!--header -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#topNavBar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#" style="font-family: 'Satisfy', cursive;border-radius: 0;">Welcome to AbdulRashid Datacenter</a>
+        </div>
+        <!--items-->
+        <div class="collapse navbar-collapse" id="topNavBar">
+            <ul class="nav navbar-nav">
+                <li class="">
+                    <a href="{% url 'table:index' %}">
+                        <span class="glyphicon glyphicon-facetime-video" aria-hidden="true"></span>&nbsp;
+                        Tables
+                    </a>
+                <li class="">
+                    <a href="{% url 'video:home_return' %}">
+                        <span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp;
+                        Home
+                    </a>
+                </li>
+                 <li class="">
+                    <a href="{% url 'table:code'%}">
+                        <span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp;
+                        Code
+                    </a>
+                </li>
+                </li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                 <li class="">
+                    <a href="{% url 'table:create_table' %}">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;
+                        Create Table
+                    </a>
+                </li>
+                 <li class="">
+                    <a href="{% url 'video:logout_user'%}">
+                        <span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp;
+                        Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="row">
+        <div class="col-sm-12">
+            <h3>{{ user.username }}'s Tables</h3>
+        </div>
+        {% if table %}
+            {% for table in table %}
+                <div class="col-sm-4 col-lg-2">
+                    <div class="thumbnail">
+                        <a href="#">
+                            <img src="{% static 'table/table.jpg' %}" class="img-responsive">
+                        </a>
+                        <div class="caption">
+                            <h2>{{ table.title }}</h2>
+
+
+                            <!-- View Details -->
+                            <a href="{% url 'table:detail' table.id %}" class="btn btn-primary btn-sm" role="button">View Details</a>
+
+                            <!-- Delete Album -->
+                            <form action="{% url 'table:delete_table' table.id%}" method="post" style="display: inline;">
+                                {% csrf_token %}
+                                <input type="hidden" name="folder_id" value="{{ table.id }}" />
+                                <button type="submit" class="btn btn-default btn-sm">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </button>
+                            </form>
+
+                            <!-- Favorite Album -->
+
+
+                        </div>
+                    </div>
+                </div>
+                {% cycle '' '' '' '' '' '<div class="clearfix visible-lg"></div>' %}
+            {% endfor %}
+        {% else %}
+            <div class="col-sm-12">
+                <br>
+                <a href="{% url 'table:create_table' %}">
+                    <button type="button" class="btn btn-success">
+                        <span class="glyphicon glyphicon-plus"></span>&nbsp; Add Table
+                    </button>
+                </a>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- If user searches and there are songs -->
+    {% if parameter %}
+        <div class="row">
+            <div class="col-sm-12">
+                <h3>Parameter</h3>
+            </div>
+            <div class="col-sm-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Video Title</th>
+
+                                    <th>Video File</th>
+                                    <th>Folder</th>
+                                    <th>Favorite</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for table in table %}
+                                    <tr>
+                                        <td>{{ parameter.parameter_title }}</td>
+
+                                        <td>
+                                            <a target="_blank" href="{{ video.video_file.url }}">
+                                                <button type="button" class="btn btn-success btn-xs">
+                                                    <span class="glyphicon glyphicon-play"></span>&nbsp; Play
+                                                </button>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="#">
+                                                <img src="#" class="img-responsive" style="width: 20px; float: left; margin-right: 10px;" />
+                                            </a>
+                                            <a href="#">{{ parameter.table.title }}</a>
+                                        </td>
+                                        <td>
+                                            <a href="#" class="btn-favorite"><span class="glyphicon glyphicon-star"></span></a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}
